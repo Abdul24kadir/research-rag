@@ -141,7 +141,6 @@ def run_evaluation():
     print(f"Too short answers:   {too_short_count}/{total}")
 
     
-
     # Pass / Fail — exit code is what CI reads
     
     print("\n" + "=" * 50)
@@ -169,6 +168,4 @@ def run_evaluation():
 if __name__ == "__main__":
     exit_code = run_evaluation()
     sys.exit(exit_code)
-
-
 
