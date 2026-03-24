@@ -150,7 +150,3 @@ with gr.Blocks(title="Reasearch paper RAG") as app:
 
 if __name__=="__main__":
     app.queue().launch(share=True)
-    
-
-
-
