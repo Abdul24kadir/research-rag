@@ -77,7 +77,7 @@ def ingest_pdf(pdf_path : str):
 #python src/ingest.py
 
 if __name__ == "__main__":
-    pdf_path = "C:/1SKILL COMBACK/rag-projects/research-rag/data/samples/attention.pdf"
+    pdf_path = "data/samples/attention.pdf"
     if not os.path.exists(pdf_path):
         print(f"Error:Could not find {pdf_path}")
         print(f"Looking in: {os.getcwd()}")
