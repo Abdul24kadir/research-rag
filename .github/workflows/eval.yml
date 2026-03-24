@@ -1,0 +1,43 @@
+# .github/workflows/eval.yml
+
+name: RAG Evaluation Pipeline
+
+# when does this run?
+on:
+  push:
+    branches: [main]      # runs on every push to main
+  pull_request:
+    branches: [main]      # runs on every pull request to main
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest    # fresh Ubuntu machine every time
+
+    steps:
+      # Step 1 — checkout your code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2 — set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      # Step 3 — install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4 — ingest PDF into ChromaDB
+      # We use a sample PDF committed to the repo
+      - name: Ingest sample PDF
+        env:
+          HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
+        run: python src/ingest.py
+
+      # Step 5 — run evaluation
+      # If exit code is 1, this step fails and blocks the push
+      - name: Run evaluation pipeline
+        env:
+          HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
+        run: python eval/evaluate.py
