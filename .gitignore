@@ -17,3 +17,8 @@ Thumbs.db
 
 #jupyter
 .ipynb_checkpoints/
+
+# PDF files — too large for git
+data/*.pdf
+src/data/*.pdf
+data/samples/*.pdf
