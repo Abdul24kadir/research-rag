@@ -22,3 +22,8 @@ Thumbs.db
 data/*.pdf
 src/data/*.pdf
 data/samples/*.pdf
+
+# data folders — PDFs too large for git
+data/
+src/data/
+chroma_db/
