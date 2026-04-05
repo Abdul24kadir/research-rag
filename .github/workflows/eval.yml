@@ -5,9 +5,17 @@ name: RAG Evaluation Pipeline
 # when does this run?
 on:
   push:
-    branches: [main]      # runs on every push to main
+    branches: [main]
+    paths:              # only run when these files change
+      - "src/**"        # any file in src/
+      - "eval/**"       # any file in eval/
+      - "requirements.txt"
   pull_request:
-    branches: [main]      # runs on every pull request to main
+    branches: [main]
+    paths:
+      - "src/**"
+      - "eval/**"
+      - "requirements.txt"
 
 jobs:
   evaluate:
