@@ -76,7 +76,8 @@ def is_refusal(answer: str) -> bool:
 
 
 def run_evaluation():
-
+    os.chdir(os.path.join(os.path.dirname(__file__), ".."))
+    print(f"Working directory: {os.getcwd()}")
     print("Loading golden evaluation set...")
     golden_path = os.path.join(os.path.dirname(__file__), "golden_set.json")
     golden_set = load_golden_set(golden_path)

@@ -1,14 +1,11 @@
-
-
 name: RAG Evaluation Pipeline
 
-# when does this run?
 on:
   push:
     branches: [main]
-    paths:              # only run when these files change
-      - "src/**"        # any file in src/
-      - "eval/**"       # any file in eval/
+    paths:
+      - "src/**"
+      - "eval/**"
       - "requirements.txt"
   pull_request:
     branches: [main]
@@ -19,33 +16,35 @@ on:
 
 jobs:
   evaluate:
-    runs-on: ubuntu-latest    # fresh Ubuntu machine every time
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1 — checkout your code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2 — set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      # Step 3 — install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Step 4 — ingest PDF into ChromaDB
-      # We use a sample PDF committed to the repo
+      # NEW — download PDF during CI (no PDF in repo needed)
+      - name: Download sample PDF
+        run: |
+          mkdir -p data/samples
+          curl -L "https://arxiv.org/pdf/1706.03762" -o data/samples/attention.pdf
+          echo "PDF downloaded successfully"
+
       - name: Ingest sample PDF
         env:
           HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
+          HF_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
         run: python src/ingest.py
 
-      # Step 5 — run evaluation
-      # If exit code is 1, this step fails and blocks the push
       - name: Run evaluation pipeline
         env:
           HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
+          HF_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
         run: python eval/evaluate.py
